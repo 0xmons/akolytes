@@ -3,8 +3,9 @@ pragma solidity 0.8.9;
 
 contract Distributions {
 
+  // Start and end are inclusive for all of these
+
   // Uniform distribution
-  // Start and end are inclusive
   function d1(uint256 start, uint256 end, uint256 seed) public pure returns (uint256 result) {
     uint256 diff = end + 1 - start;
     result = (seed % diff) + start;

@@ -27,7 +27,7 @@ contract Akolytes is Trust, ERC721Enumerable {
     mons = IERC721Enumerable(monAddress);
   }
 
-  function requestRNG() external requiresTrust {
+  function requestRNG() external {
     require(! alreadyRequestedRNG, "Already requested");
     require(totalSupply() == MAX_SUPPLY, "Not all out");
     requestId = rngRequestor.requestRNG();
@@ -35,9 +35,15 @@ contract Akolytes is Trust, ERC721Enumerable {
   }
 
   // Used for dutch auction and admin minting
-  function mint(address to, uint256 id) external requiresTrust {
+  function mint(address to, uint256 id) public requiresTrust {
     require(totalSupply() < MAX_SUPPLY, "MAX_SUPPLY");
     _mint(to, id);
+  }
+
+  function batchMint(address to, uint256[] calldata ids) external requiresTrust {
+    for (uint256 i = 0; i < ids.length; i++) {
+      mint(to, ids[i]);
+    }
   }
 
   function tokenURI(uint256 id) public view override returns(string memory) {
